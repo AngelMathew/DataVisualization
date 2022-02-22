@@ -1,5 +1,6 @@
 import './App.css';
 import LineChart from './components/LineChart/LineChart';
+import ScatterPlot from './components/ScatterPlot/ScatterPlot';
 
 function App() {
   return (
@@ -8,6 +9,9 @@ function App() {
       </header>
       <section>
       <LineChart/>
+      </section>
+      <section>
+      <ScatterPlot/>
       </section>
     </div>
   );

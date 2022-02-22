@@ -25,7 +25,6 @@ const LineChart=()=>{
             dates.map((item)=>
             {
                 let date=item;
-                console.log(dates)
                 let count=0
                 permit.map((val)=>{
                     if(val.enteredon.slice(0,10)===date){
@@ -34,8 +33,6 @@ const LineChart=()=>{
 
                 })
                 countArray.push({date:parseDate(date),count:count})
-                console.log("countArray",countArray)
-                // console.log("permit",permit)
            
             })
             const margin={top:20,right:30,bottom:30,left:30}
@@ -72,111 +69,171 @@ const LineChart=()=>{
             svg.append('path')
             .data([countArray])
             .attr('fill','none')
-            .attr('stroke','#524A4E')
-            .attr('stroke-width',2)
+            .attr('stroke','#FFC0D3')
+            .attr('stroke-width',4)
             .attr('d',d3.line()
                         .x((d)=>{return x(d.date)})
                         .y((d)=>{return y(d.count)})
+                        .curve(d3.curveMonotoneX)
             )
 
             // ADD TITLE
-            svg.append('text')
-					.attr('x',(width/2))
-					.attr('y', (margin.top/5 - 10))
-					.attr('text-anchor', 'middle')
-					.attr('font-size', '16px')
-					.attr('fill','#524A4E')
-					.text('Line Chart - Shooting Permit')
+            // svg.append('text')
+			// 		.attr('x',(width/2))
+			// 		.attr('y', (margin.top/5 - 10))
+			// 		.attr('text-anchor', 'middle')
+			// 		.attr('font-size', '16px')
+			// 		.attr('fill','#524A4E')
+			// 		.text('Line Chart - Shooting Permit')
 
-                    let bisect = d3.bisector((d)=> { debugger;console.log("D",d); return d.date }).right;
-                    let mouseover=()=> {
-                        focus.style("opacity", 1)
-                        focusText.style("opacity",1)
-                        focusText2.style("opacity",1)
-                        focusLine.style("opacity", 1)
-                      }
+            //         let bisect = d3.bisector((d)=> {return d.date }).right;
+            //         let mouseover=()=> {
+            //             focus.style("opacity", 1)
+            //             focusText.style("opacity",1)
+            //             focusText2.style("opacity",1)
+            //             focusLine.style("opacity", 1)
+            //           }
         
-                    let mousemove=(event)=> {
-                        // recover coordinate we need
-                        let x0 = d3.pointer(event);
-                        const hoveredDate = x.invert(x0[0])
-                        const passed =new Date(hoveredDate.setHours(0,0,0,0));
-                        let mockdata=countArray.sort(function(a, b) { return a.date - b.date; });
-                        let i = bisect(mockdata, passed);
-                        let selectedData = countArray[i]
-                        focus
-                          .attr("cx", x(selectedData.date))
-                          .attr("cy", y(selectedData.count))
-                        focusText
-                          .html("Date:" + new Date(selectedData.date).toLocaleDateString())
-                          .attr("x", x(selectedData.date)+10)
-                          .attr("y", y(selectedData.count))
-                        focusText2
-                            .html("Count:" + selectedData.count)
-                            .attr("x", x(selectedData.date)+10)
-                            .attr("y", y(selectedData.count)+15)
-                        focusLine
-                            .attr("x1", x(selectedData.date)).attr("x2", x(selectedData.date))	
-                        }
+            //         let mousemove=(event)=> {
+            //             // recover coordinate we need
+            //             let x0 = d3.pointer(event);
+            //             const hoveredDate = x.invert(x0[0])
+            //             const passed =new Date(hoveredDate.setHours(0,0,0,0));
+            //             let mockdata=countArray.sort(function(a, b) { return a.date - b.date; });
+            //             let i = bisect(mockdata, passed);
+            //             let selectedData = countArray[i]
+            //             focus
+            //               .attr("cx", x(selectedData.date))
+            //               .attr("cy", y(selectedData.count))
+            //             focusText
+            //               .html("Date:" + new Date(selectedData.date).toLocaleDateString())
+            //               .attr("x", x(selectedData.date)+10)
+            //               .attr("y", y(selectedData.count))
+            //             focusText2
+            //                 .html("Count:" + selectedData.count)
+            //                 .attr("x", x(selectedData.date)+10)
+            //                 .attr("y", y(selectedData.count)+15)
+            //             focusLine
+            //                 .attr("x1", x(selectedData.date)).attr("x2", x(selectedData.date))	
+            //             }
 
-                    let mouseout=()=> {
-                        focus.style("opacity", 0)
-                        focusText.style("opacity", 0)
-                        focusText2.style("opacity", 0)
-                        focusLine.style("opacity", 0)
-                    }
+            //         let mouseout=()=> {
+            //             focus.style("opacity", 0)
+            //             focusText.style("opacity", 0)
+            //             focusText2.style("opacity", 0)
+            //             focusLine.style("opacity", 0)
+            //         }
 
-              // Create the text that travels along the curve of chart
-                let focusGroup = svg
+            //   // Create the text that travels along the curve of chart
+            //     let focusGroup = svg
+            //     .append('g')
+            //     let focusText =focusGroup
+            //     .append('text')
+            //     .attr("stroke", "#FF5C8D")
+            //     .style("opacity", 0)
+            //     .attr("text-anchor", "left")
+            //     .attr("alignment-baseline", "middle")
+            //     .attr('dy', "0.35em")
+            //     .attr('font-size', "14px");
+
+
+            //     let focusText2 =focusGroup
+            //     .append('text')
+            //     .attr("stroke", "#FF5C8D")
+            //     .style("opacity", 0)
+            //     .attr("text-anchor", "left")
+            //     .attr("alignment-baseline", "middle")
+            //     .attr('dy', "0.55em")
+            //     .attr('font-size', "14px");
+
+            // // Createa line that travels along the curve of chart
+            
+            //     let focusLine = focusGroup
+            //     .append("line")
+            //         .attr("stroke", "#FF5C8D")
+            //         .attr("x1", 10).attr("x2", 10)
+            //         .attr("y1", 0).attr("y2", height)
+            //         .style("opacity", 0)
+
+            // // Create a rect on top of the svg area: this rectangle recovers mouse position
+            // svg
+            // .append('rect')
+            // .style("fill", "none")
+            // .style("pointer-events", "all")
+            // .attr('width', width)
+            // .attr('height', height)
+            // .on('mouseover',mouseover)
+            // .on('mousemove', e=>mousemove(e))
+            // .on('mouseout', mouseout);
+
+            //  // Create the circle that travels along the curve of chart
+            // let focus = svg
+            // .append('g')
+            // .append('circle')
+            //     .style("fill", "none")
+            //     .attr("stroke", "#FF5C8D")
+            //     .attr('r', 6)
+            //     .style("opacity", 0)
+            
+            const focus = svg
                 .append('g')
-                let focusText =focusGroup
-                .append('text')
-                .attr("stroke", "#FF5C8D")
-                .style("opacity", 0)
-                .attr("text-anchor", "left")
-                .attr("alignment-baseline", "middle")
-                .attr('dy', "0.35em")
-                .attr('font-size', "14px");
+                // .attr('class', 'focus')
+                .style('display', 'none');
 
-
-                let focusText2 =focusGroup
-                .append('text')
-                .attr("stroke", "#FF5C8D")
-                .style("opacity", 0)
-                .attr("text-anchor", "left")
-                .attr("alignment-baseline", "middle")
-                .attr('dy', "0.55em")
-                .attr('font-size', "14px");
-
-            // Createa line that travels along the curve of chart
+                focus.append('circle').attr('r', 5).style("fill", "#FF5C8D");
+                let bisect = d3.bisector((d)=> {return d.date }).left;
             
-                let focusLine = focusGroup
-                .append("line")
-                    .attr("stroke", "#FF5C8D")
-                    .attr("x1", 10).attr("x2", 10)
-                    .attr("y1", 0).attr("y2", height)
-                    .style("opacity", 0)
+                const tooltip = d3
+                .select('#d3demo')
+                .append('div')
+                .attr('class', 'tooltip')
+                .style('opacity', 0);
 
-            // Create a rect on top of the svg area: this rectangle recovers mouse position
-            svg
-            .append('rect')
-            .style("fill", "none")
-            .style("pointer-events", "all")
-            .attr('width', width)
-            .attr('height', height)
-            .on('mouseover',mouseover)
-            .on('mousemove', e=>mousemove(e))
-            .on('mouseout', mouseout);
+                svg
+                .append('rect')
+                .attr('class', 'overlay')
+                .attr('width', width)
+                .attr('height', height)
+                .style('opacity', 0)
+                .on('mouseover', () => {
+                    focus.style('display', null);
+                })
+                .on('mouseout', () => {
+                    tooltip
+                    //     .transition()
+                    //     .duration(300)
+                        .style('opacity', 0);
+                        focus.style("display", 'none')
+                })
+               .on('mousemove', e=>mousemove(e));
+                function mousemove(event) {
+                // const bisect = d3.bisector(d => d.label).right;
+                const xPos = d3.pointer(event);
+                const hoveredDate = x.invert(xPos[0])
+                const passed =new Date(hoveredDate.setHours(0,0,0,0));
+                let mockdata=countArray.sort(function(a, b) { return a.date - b.date; });
+                let x0= bisect(mockdata, passed);
+                console.log("x0",x0)
+                const d0 = countArray[x0];
+                // focus
+                //     .attr("cx", x(d0.date))
+                //     .attr("cy", y(d0.count))
+                focus.attr(
+                    'transform',
+                    `translate(${x(d0.date)},${y(d0.count)})`,
+                );
+                tooltip
+                //     .transition()
+                //     .duration(200)
+                   .style('opacity', 1);
+                tooltip
+                    .html("Date:" + new Date(d0.date).toLocaleDateString())
+                    .style(
+                        'transform',
+                        `translate(${x(d0.date)}px,${y(d0.count)}px)`,
+                );
+            }
 
-             // Create the circle that travels along the curve of chart
-            let focus = svg
-            .append('g')
-            .append('circle')
-                .style("fill", "none")
-                .attr("stroke", "#FF5C8D")
-                .attr('r', 6)
-                .style("opacity", 0)
-            
             }
         )
     })
